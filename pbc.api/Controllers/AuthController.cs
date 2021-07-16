@@ -1,3 +1,4 @@
+using System.Reflection.Metadata.Ecma335;
 using System;
 using System.Text;
 using System.Security.Claims;
@@ -14,18 +15,19 @@ namespace pbc.api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class AuthController:ControllerBase
     {
         private IConfiguration _config;
         private IAuthRepository _repo;
-
+        
         public AuthController(IAuthRepository repo,IConfiguration config)
         {
             _config=config;
             _repo=repo;
         }
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody]UserForRegisterDto userForRegisterDto)
+        public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
         {
             if(!ModelState.IsValid)
             {
@@ -44,9 +46,13 @@ namespace pbc.api.Controllers
              return StatusCode(201);
               
         }
+         [HttpPost("login")]
         public async Task<ActionResult> Login(UserForLoginDto userForLoginDto)
         {
-            var userFromRepo=await _repo.Login(userForLoginDto.UserName,userForLoginDto.Passwoed);
+            try
+            {
+                var userFromRepo=await _repo.Login(userForLoginDto.UserName,userForLoginDto.Passwoed);
+           
             if(userFromRepo==null)
             {
                 return Unauthorized();
@@ -69,6 +75,13 @@ namespace pbc.api.Controllers
             return Ok(new{
                 token=tokenHandler.WriteToken(token)
             });
+            }
+            catch (System.Exception)
+            {
+               return StatusCode(500,'bad error');
+            }
+             
+            
           
         }
         

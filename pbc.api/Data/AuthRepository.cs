@@ -17,6 +17,7 @@ namespace pbc.api.Data
         public async Task<User> Login(string username, string passwoed)
         {
             var user = await context.Users.FirstOrDefaultAsync(x => x.UserName == username);
+            return  new User{UserName="fdgfdgd"};
             if (user == null)
             {
                 return null;

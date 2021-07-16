@@ -1,0 +1,6 @@
+<div class="container">
+    <button type="botton" (click)="registerToggle()"> Register</button>
+  <div *ngIf="registerMode">   
+<app-register [valueFromHome]="values" (cancelRegister)="cancelRegisterMode($event)"></app-register>
+  </div>
+  </div>
