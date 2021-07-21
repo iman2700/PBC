@@ -78,7 +78,7 @@ namespace pbc.api.Controllers
             }
             catch (System.Exception)
             {
-               return StatusCode(500,'bad error');
+               return StatusCode(500,"bad error");
             }
              
             

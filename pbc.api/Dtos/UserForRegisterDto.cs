@@ -8,7 +8,7 @@ namespace pbc.api.Dtos
         [Required]
         public string UserName { get; set; }
         [Required]
-          [StringLength(8,MinimumLength =4,ErrorMessage ="you must specific passworde")]
+          // [StringLength(8,MinimumLength =4,ErrorMessage ="you must specific passworde")]
         public string Password { get; set; }
         
     }
