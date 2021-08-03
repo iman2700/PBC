@@ -14,21 +14,35 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ListComponent } from './list/list.component';
 import { MessagesComponent } from './messages/messages.component';
-import { MemberListComponent } from './member-list/member-list.component';
+import { MemberListComponent } from './member/member-list/member-list.component'; 
 import { appRoutes } from './routes';
+import { MemberCardComponent } from './member/member-card/member-card.component';
 
 // import { ErrorInterceptorProvider } from './_services/Error.inteceptor';
  
 @NgModule({
-  declarations: [AppComponent,ValueComponent, NavComponent, HomeComponent, RegisterComponent, ListComponent, MessagesComponent, MemberListComponent],
-  imports: [BrowserModule, AppRoutingModule,HttpClientModule,FormsModule,
+  declarations: [
+    AppComponent,
+    ValueComponent,
+    NavComponent,
+    HomeComponent,
+    RegisterComponent,
+    ListComponent,
+    MessagesComponent,
+    MemberListComponent,
+    MemberCardComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
     BrowserAnimationsModule,
     BsDropdownModule.forRoot(),
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
   ],
   providers: [AuthService],
   // ErrorInterceptorProvider
   bootstrap: [AppComponent],
-  
 })
 export class AppModule {}

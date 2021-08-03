@@ -1,3 +1,6 @@
+using System.Runtime.InteropServices;
+using System.Transactions;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Security.Claims;
 using System.Net.Security;
@@ -33,9 +36,13 @@ namespace pbc.api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(opt => 
+                opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
             services.AddCors();
+            services.AddAutoMapper(typeof(DataRepository).Assembly);
             services.AddScoped<IAuthRepository,AuthRepository>();
+            services.AddScoped<IDataRepository,DataRepository>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(option=>{
                 option.TokenValidationParameters=new TokenValidationParameters
@@ -59,9 +66,10 @@ namespace pbc.api
             // app.UseHttpsRedirection();
 
             app.UseRouting();
-            app.UseCors(x=>x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseAuthentication();  
-            // app.UseAuthorization();
+            app.UseAuthorization();
+            app.UseCors(x=>x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            
                   
             app.UseEndpoints(endpoints =>
             {
