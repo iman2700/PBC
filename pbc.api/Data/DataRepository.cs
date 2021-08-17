@@ -1,3 +1,4 @@
+using System.Threading;
 using System;
 using System.Globalization;
 using System.Security.Cryptography.X509Certificates;
@@ -5,6 +6,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using pbc.api.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace pbc.api.Data
 {
@@ -46,6 +48,10 @@ namespace pbc.api.Data
         {
            var photo= await context.Photos.FirstOrDefaultAsync(p=>p.Id==id);
            return photo;
+        }
+        public async Task<Photo> GetMainPhotoForUser(int userId)
+        {
+            return await context.Photos.Where(u=> u.UserId == userId).FirstOrDefaultAsync(p => p.IsMain); 
         }
 
     }

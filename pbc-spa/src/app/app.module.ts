@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { JwtModule } from '@auth0/angular-jwt';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ValueComponent } from './value/value.component';
-import{HttpClientModule} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { NavComponent } from './nav/nav.component'
 import { FormsModule } from '@angular/forms';
 import { AuthService } from './_services/auth.service';
@@ -25,10 +25,21 @@ import { PhotoEditorComponent } from './member/photo-editor/photo-editor.compone
 import { MemberEditComponent } from './member/member-edit/member-edit.component';
 import { MemberEditResolver } from './_resolvers/member-edit.resolver';
 import { UnsavedGuard } from './_guards/unsaved.guard';
+import { FileUploadModule } from 'ng2-file-upload';
+
+ 
 
 export function tokenGetter()
 {
   return localStorage.getItem('token');
+}
+
+export class CustomHammerConfig extends HammerGestureConfig
+{
+  overrides={
+    pinch:{enable:false},
+    rotate:{enable:false}
+  };
 }
 
 // import { ErrorInterceptorProvider } from './_services/Error.inteceptor';
@@ -57,7 +68,8 @@ export function tokenGetter()
     BrowserAnimationsModule,
     BsDropdownModule.forRoot(),
     RouterModule.forRoot(appRoutes),
-    JwtModule.forRoot({
+    FileUploadModule,
+     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,  
         allowedDomains: ['localhost:5000'],
@@ -65,7 +77,9 @@ export function tokenGetter()
       },
     }),
   ],
-  providers: [AuthService, MemberDetailResolver, MemberEditResolver,UnsavedGuard],
+  providers: [AuthService, MemberDetailResolver, MemberEditResolver,UnsavedGuard,
+    {provide:HAMMER_GESTURE_CONFIG,useClass:CustomHammerConfig} 
+  ],
   // ErrorInterceptorProvider
   bootstrap: [AppComponent],
 })

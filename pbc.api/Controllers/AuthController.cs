@@ -10,6 +10,7 @@ using pbc.api.Dtos;
 using pbc.api.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using AutoMapper;
 
 namespace pbc.api.Controllers
 {
@@ -20,11 +21,12 @@ namespace pbc.api.Controllers
     {
         private IConfiguration _config;
         private IAuthRepository _repo;
-        
-        public AuthController(IAuthRepository repo,IConfiguration config)
+        private readonly IMapper _mapper;
+        public AuthController(IAuthRepository repo,IConfiguration config ,IMapper mapper)
         {
             _config=config;
             _repo=repo;
+            _mapper=mapper;
         }
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
@@ -51,12 +53,14 @@ namespace pbc.api.Controllers
         {
             try
             {
-                var userFromRepo=await _repo.Login(userForLoginDto.UserName,userForLoginDto.Passwoed);
+                User userFromRepo=await _repo.Login(userForLoginDto.UserName,userForLoginDto.Passwoed);
            
             if(userFromRepo==null)
             {
                 return Unauthorized();
             }
+            
+            var userToReturn=this._mapper.Map<UserForDetailedDto>(userFromRepo);
             var claims=new []
             {
                 new Claim(ClaimTypes.NameIdentifier,userFromRepo.Id.ToString()),
@@ -73,12 +77,13 @@ namespace pbc.api.Controllers
             var tokenHandler=new JwtSecurityTokenHandler();
             var token=tokenHandler.CreateToken(tokenDescriptor);
             return Ok(new{
-                token=tokenHandler.WriteToken(token)
+                token=tokenHandler.WriteToken(token),
+                user=userToReturn
             });
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-               return StatusCode(500,"bad error");
+               return StatusCode(500,ex);
             }
              
             

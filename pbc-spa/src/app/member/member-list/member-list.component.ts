@@ -21,7 +21,6 @@ export class MemberListComponent implements OnInit {
   loadUser() {
     this.userServic.getUsers().subscribe(
       (users: User[]) => {
-        console.log(users)
         this.users = users;
        
       },

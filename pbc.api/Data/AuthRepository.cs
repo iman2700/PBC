@@ -3,6 +3,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using pbc.api.Models;
+using pbc.api.Dtos;
 
 namespace pbc.api.Data
 {
@@ -16,8 +17,7 @@ namespace pbc.api.Data
         }
         public async Task<User> Login(string username, string passwoed)
         {
-            var user = await context.Users.FirstOrDefaultAsync(x => x.UserName == username);
-          
+            var user = await context.Users.Include(p=>p.Photos).FirstOrDefaultAsync(x => x.UserName == username);
             if (user == null)
             {
                 return null;
