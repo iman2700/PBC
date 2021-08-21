@@ -82,8 +82,15 @@ namespace pbc.api.Controllers
            userFromRepo.Photos.Add(photo);
             if(await _repo.SaveAll())
            {
-               var photoToReturn=_mapper.Map<PhotoForReturnDto>(photo);
-               return CreatedAtRoute("GetPhoto",new {id=photo.Id},photoToReturn);
+            //    var photoToReturn=_mapper.Map<PhotoForReturnDto>(photo);
+            //    return CreatedAtAction("GetPhoto",new {id = photo.Id});
+             
+           
+
+
+                var photoFromRepo=await _repo.GetPhoto(photo.Id);
+            var photo1=_mapper.Map<PhotoForReturnDto>(photoFromRepo);
+            return Ok(photo1);
            }
            return BadRequest("Could not add the photo");
 

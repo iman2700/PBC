@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule, HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { JwtModule } from '@auth0/angular-jwt';
 import { TabsModule } from 'ngx-bootstrap/tabs';
@@ -8,11 +9,10 @@ import { AppComponent } from './app.component';
 import { ValueComponent } from './value/value.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NavComponent } from './nav/nav.component'
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from './_services/auth.service';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ListComponent } from './list/list.component';
 import { MessagesComponent } from './messages/messages.component';
@@ -26,6 +26,13 @@ import { MemberEditComponent } from './member/member-edit/member-edit.component'
 import { MemberEditResolver } from './_resolvers/member-edit.resolver';
 import { UnsavedGuard } from './_guards/unsaved.guard';
 import { FileUploadModule } from 'ng2-file-upload';
+import { BsDatepickerModule } from "ngx-bootstrap/datepicker";
+
+
+
+ 
+
+
 
  
 
@@ -61,12 +68,15 @@ export class CustomHammerConfig extends HammerGestureConfig
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     TabsModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
+    ReactiveFormsModule,
     FormsModule,
     BrowserAnimationsModule,
     BsDropdownModule.forRoot(),
+    BsDatepickerModule.forRoot(),
     RouterModule.forRoot(appRoutes),
     FileUploadModule,
      JwtModule.forRoot({
@@ -78,7 +88,8 @@ export class CustomHammerConfig extends HammerGestureConfig
     }),
   ],
   providers: [AuthService, MemberDetailResolver, MemberEditResolver,UnsavedGuard,
-    {provide:HAMMER_GESTURE_CONFIG,useClass:CustomHammerConfig} 
+    {provide:HAMMER_GESTURE_CONFIG,useClass:CustomHammerConfig} ,
+
   ],
   // ErrorInterceptorProvider
   bootstrap: [AppComponent],

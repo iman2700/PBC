@@ -1,13 +1,9 @@
 using System;
-using System.Reflection.Metadata;
-
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using pbc.api.Data;
 using pbc.api.Dtos;
 using System.Security.Claims;
@@ -34,7 +30,7 @@ namespace pbc.api.Controllers
             var userToReturn=_mapper.Map<IEnumerable<UserForListDto>>(users);
             return Ok(userToReturn); 
         }
-         [HttpGet("getuser/{id}")]
+         [HttpGet("getuser/{id}",Name="getuser")]
          public async Task<IActionResult> GetUser(int id)
         {
             var users=await _repo.GetUser(id);

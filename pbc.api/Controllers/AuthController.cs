@@ -40,12 +40,10 @@ namespace pbc.api.Controllers
              {
                  return BadRequest("user nanw alredy exist");
              }
-             var userToCreate=new User
-             {
-                 UserName=userForRegisterDto.UserName
-             };
+             var userToCreate=_mapper.Map<User>(userForRegisterDto);
              var createUser=await _repo.Register(userToCreate,userForRegisterDto.Password);
-             return StatusCode(201);
+             var userToReturn=_mapper.Map<UserForDetailedDto>(createUser);
+             return CreatedAtRoute("getuser",new {controller="user",id=createUser.Id},userToReturn);
               
         }
          [HttpPost("login")]
@@ -53,7 +51,7 @@ namespace pbc.api.Controllers
         {
             try
             {
-                User userFromRepo=await _repo.Login(userForLoginDto.UserName,userForLoginDto.Passwoed);
+                User userFromRepo=await _repo.Login(userForLoginDto.UserName,userForLoginDto.Password);
            
             if(userFromRepo==null)
             {

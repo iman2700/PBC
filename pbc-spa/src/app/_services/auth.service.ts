@@ -21,23 +21,24 @@ export class AuthService {
   {
     this.photoUrl.next(phtourl);
   }
-  login(model: any) {
-    return this.http.post(this.baseUrl + 'login', model).pipe(
+  login(user: User) {
+    debugger;
+    return this.http.post(this.baseUrl + 'login', user).pipe(
       map((response: any) => {
-        const user = response;
-        if (user) {
-          localStorage.setItem('token', user.token);
-          localStorage.setItem('user',JSON.stringify(user.user));
-          this.decodedToken=this.jwtHelpr.decodeToken(user.token)
-          this.currentUser=user.user;
+        const userData = response;
+        if (userData) {
+          localStorage.setItem('token', userData.token);
+          localStorage.setItem('user',JSON.stringify(userData.user));
+          this.decodedToken=this.jwtHelpr.decodeToken(userData.token)
+          this.currentUser=userData.user;
           this.changeMemberPhoto(this.currentUser.photoUrl);
         }
       })
     );
   }
-  register(model:any)
+  register(user:User)
   {
-    return this.http.post(this.baseUrl+'register',model);
+    return this.http.post(this.baseUrl+'register',user);
   }
   lggedIn()
   {

@@ -23,6 +23,7 @@ namespace pbc.api.Helper
             CreateMap<Photo,PhotoForReturnDto>();
             CreateMap<PhotoForCreationDto,Photo>();
             CreateMap<UserForUpdateDto,User>();
+             CreateMap<UserForRegisterDto,User>();
         }
     }
 }

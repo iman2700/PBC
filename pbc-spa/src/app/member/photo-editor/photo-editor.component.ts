@@ -12,8 +12,9 @@ import { AlertifyService } from 'src/app/_services/alertify.service';
   styleUrls: ['./photo-editor.component.css'],
 })
 export class PhotoEditorComponent implements OnInit {
-  @Input()
-  photos: Photo[] | undefined;
+
+
+  @Input()  photos?: Photo[];
   @Output() getMemberPhotoChange= new EventEmitter<string>();
   constructor(
     private authServic: AuthService,
@@ -58,6 +59,12 @@ export class PhotoEditorComponent implements OnInit {
           isMain: res.isMain,
         };
         this.photos?.push(photo);
+        if(photo.isMain)
+        {
+          this.authServic.changeMemberPhoto(photo.url)
+          this.authServic.currentUser.photoUrl=photo.url;
+          localStorage.setItem('user',JSON.stringify(this.authServic.currentUser));
+        }
       }
     };
   }
